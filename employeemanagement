@@ -1,0 +1,154 @@
+import pymysql
+con=pymysql.connect(host='localhost',user='root',password='24082003')
+cur=con.cursor()
+cur.execute('use company')
+ch=0
+while ch!=6:
+    print("1. Employee Registration\n2. Display all the data\n3. Search Employee\n4. Update data\n5. Remove a data\n6. Exit")
+    print("_________________________________________________________")
+    ch=int(input("Enter Your Choice"))
+    print("=======================================================")
+    if ch==1:
+        a=input("Enter Employee ID:")
+        b=input("Enter Employee Name:")
+        c=input("Enter Age:")
+        d=input("Enter Salary:")
+        e=input("Enter Date of Joining:")
+        f=input("Enter Post:")
+        reg="insert into employee values("+a+",'"+b+"',"+c+","+d+",'"+e+"','"+f+"')"
+        cur.execute(reg)
+        con.commit()
+    elif ch==2:
+        cur.execute('select* from employee')
+        d=cur.fetchall()
+        for i in d:
+            print(i)
+    elif ch==3:
+        f=input("Enter Field")
+        if f=='EmployeeID':
+            Empid=input("Enter Employee ID")
+            cur.execute("select* from employee where "+f+"="+Empid)
+            d=cur.fetchall()
+            for i in d:
+                print(i)
+        elif f=='Employee_Name':
+            Empname=input("Enter name")
+            cur.execute("select* from employee where "+f+"='"+Empname+"'")
+            d=cur.fetchall()
+            for i in d:
+                print(i)
+        elif f=='Age':
+            print("1.Age equals to\n2.Age greater than\n3.Age lower than")
+            c1=int(input("Enter choice"))
+            if c1==1:
+                age=input("Enter age")
+                cur.execute("select* from employee where "+f+"="+age)
+                d=cur.fetchall()
+                for i in d:
+                    print(i)
+            elif c1==2:
+                age=input("Enter age")
+                cur.execute("select* from employee where "+f+">"+age)
+                d=cur.fetchall()
+                for i in d:
+                    print(i)
+            elif c1==3:
+                age=input("Enter age")
+                cur.execute("select* from employee where "+f+"<"+age)
+                d=cur.fetchall()
+                for i in d:
+                    print(i)
+        elif f=="Salary":
+            print("1.Salary equals to\n2.Salary greater than\n3.Salary lower than")
+            c1=int(input("Enter choice"))
+            if c1==1:
+                sal=input("Enter salary")
+                cur.execute("select* from employee where "+f+"="+sal)
+                d=cur.fetchall()
+                for i in d:
+                    print(i)
+            elif c1==2:
+                sal=input("Enter salary")
+                cur.execute("select* from employee where "+f+">"+sal)
+                d=cur.fetchall()
+                for i in d:
+                    print(i)
+            elif c1==3:
+                sal=input("Enter salary")
+                cur.execute("select* from employee where "+f+"<"+sal)
+                d=cur.fetchall()
+                for i in d:
+                    print(i)
+        elif f=="Date_of_Joining":
+            print("1.Date of joining before given date\n2.Date of joining after given date\n3.Date of joining between given dates")
+            c1=int(input("Enter choice"))
+            if c1==1:
+                dat=input("Enter date")
+                cur.execute("select* from employee where "+f+"<'"+dat+"'")
+                d=cur.fetchall()
+                for i in d:
+                    print(i)
+            elif c1==2:
+                dat=input("Enter date")
+                cur.execute("select* from employee where "+f+">'"+dat+"'")
+                d=cur.fetchall()
+                for i in d:
+                    print(i)
+            elif c1==3:
+                dat1=input("Enter Starting date")
+                dat2=input("Enter Ending date")
+                cur.execute("select* from employee where "+f+" between '"+dat1+"' and '"+dat2+"'")
+                d=cur.fetchall()
+                for i in d:
+                    print(i)
+        elif f=="Post":
+            post=input("Enter Post")
+            cur.execute("select* from employee where "+f+"='"+post+"'")
+            d=cur.fetchall()
+            for i in d:
+                print(i)
+    elif ch==4:
+        print("1.Update Employee ID\n2.Update Employee name\n3.update Age\n4.Update Salary\n5.Update Date of joining\n6.Update Post")
+        cho=int(input("Enter Choice"))
+        if cho==1:
+            empid=input("Enter new empid")
+            name=input("Enter name of employee you want to update")
+            cur.execute("update employee set EmployeeID="+empid+" where Employee_Name='"+name+"'")
+            con.commit()
+        elif cho==2:
+            empname=input("Enter new name")
+            empid=input("Enter ID of the employee you want to update")
+            cur.execute("update employee set Employee_Name='"+empname+"' where EmployeeID="+empid)
+            con.commit()
+        elif cho==3:
+            age=input("Enter new age")
+            empid=input("Enter ID of the employee you want to update")
+            cur.execute("update employee set Age="+age+" where EmployeeID="+empid)
+            con.commit()
+        elif cho==4:
+            print("1.Increase Salary\n2.Decrease Salary")
+            ch1=int(input("Enter Choice"))
+            if ch1==1:
+                sal=input("How much salary you want to increase")
+                empid=input("Enter ID of the employee you want to update")
+                cur.execute("update employee set Salary=Salary+"+sal+" where EmployeeID="+empid)
+                con.commit()
+            elif ch1==2:
+                sal=input("How much salary you wnat to decrease")
+                empid=input("Enter ID of the employee you want to update")
+                cur.execute("update employee set Salary=Salary-"+sal+" where EmployeeID="+empid)
+                con.commit()
+        elif cho==5:
+            dat=input("Enter new date of joining")
+            empid=input("Enter ID of the employee you want to update")
+            cur.execute("update employee set Date_of_Joining='"+dat+"' where EmployeeID="+empid)
+            con.commit()
+        elif cho==6:
+            post=input("Enter new post")
+            empid=input("Enter ID of the employee you want to update")
+            cur.execute("update employee set Post='"+post+"' where EmployeeID="+empid)
+            con.commit()
+    elif ch==5:
+        empid=input("Enter employee id")
+        cur.execute("delete from employee where EmployeeID="+empid)
+con.close()
